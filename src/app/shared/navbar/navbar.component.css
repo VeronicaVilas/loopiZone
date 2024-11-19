@@ -1,0 +1,36 @@
+.navbar {
+  background-color: #F2F2F2;
+}
+
+.navbar-logo {
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  font-weight: 300;
+  margin-left: 8px;
+}
+
+.navbar-logo span {
+  background: linear-gradient(to bottom, #EC6D20, #FFC446);
+  color: #F2F2F2;
+  display: inline-block;
+  padding: 4px 14px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 100px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+
+.navbar-search {
+  width: 40%;
+  margin-top: 1.2rem;
+  margin-left: 10rem;
+}
+
+::ng-deep .mat-form-field-appearance-outline {
+  --mdc-outlined-text-field-container-shape: 28px;
+}
+
+mat-icon {
+  color: #6E716E;
+}
+

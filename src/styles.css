@@ -3,6 +3,8 @@
 :root {
   --bg-red-light-color:#8E1D22;
   --bg-red-dark-color:#340307;
+  --text-black-900:#302E4D;
+  --text-black-700:#504E70;
 }
 
 * {

@@ -11,10 +11,10 @@
 }
 
 .navbar .navbar-logo span {
-  background: linear-gradient(to bottom, #EC6D20, #FFC446);
-  color: #F2F2F2;
+  background: linear-gradient(to bottom, var(--bg-red-dark-color), var(--bg-red-light-color));
+  color: #FFF;
   display: inline-block;
-  padding: 4px 14px;
+  padding: 4px 12px;
   border-radius: 0px 100px 100px 100px;
 }
 

@@ -12,9 +12,9 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  sidebarVisible = false;
+  sidebarVisible = false; // Inicia com a sidebar visível
 
   toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
+    this.sidebarVisible = !this.sidebarVisible; // Alterna o estado da sidebar
   }
 }

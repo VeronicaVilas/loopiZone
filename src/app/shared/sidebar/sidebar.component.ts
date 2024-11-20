@@ -12,5 +12,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  @Input() visible: boolean = true;
+  @Input() sidebarCollapsed: boolean = true;
 }

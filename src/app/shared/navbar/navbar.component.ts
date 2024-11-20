@@ -13,7 +13,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  @Output() toggleSidebar = new EventEmitter<boolean>();
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   onToggleSidebar() {
     this.toggleSidebar.emit();

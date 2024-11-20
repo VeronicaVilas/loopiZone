@@ -4,6 +4,11 @@
   height: calc(100vh - 60px);
   top: 60px;
   z-index: -1;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px;
 }
 
 .sidebar .sidebar-content {
@@ -34,6 +39,11 @@
   margin-bottom: 10px;
 }
 
+.sidebar.collapsed .sidebar-content .sidebar-profile .img {
+  width: 60px;
+  height: 60px;
+}
+
 .sidebar .sidebar-content .sidebar-profile .name {
   color: var(--text-black-900);
   font-size: 18px;
@@ -53,6 +63,11 @@
   height: 25px;
 }
 
+.sidebar.collapsed .sidebar-content .sidebar-profile button {
+  width: 30px;
+  height: 30px;
+}
+
 .sidebar .sidebar-content .sidebar-profile button mat-icon {
   color:  var(--text-black-900);
   font-size: 16px;
@@ -61,6 +76,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 mat-divider {
   align-self: stretch;
@@ -87,6 +103,13 @@ mat-divider {
   transition: all 0.3s ease;
 }
 
+.sidebar.collapsed .sidebar-content .sidebar-items .sidebar-item {
+  display: flex;
+  justify-content: center;
+  gap: 0px;
+  padding: 0 24px;
+}
+
 .sidebar .sidebar-content .sidebar-items .sidebar-item span{
   font-size: 16px;
   font-weight: bold;
@@ -94,6 +117,10 @@ mat-divider {
 
 .sidebar .sidebar-content .sidebar-items .sidebar-item mat-icon {
   color: var(--text-black-700);
+}
+
+.sidebar.collapsed .sidebar-content .sidebar-items .sidebar-item mat-icon {
+  font-size: 26px;
 }
 
 .sidebar .sidebar-content .sidebar-items .sidebar-item:hover,
@@ -119,6 +146,11 @@ mat-divider {
   overflow-y: scroll;
 }
 
+.sidebar.collapsed .sidebar-content .sidebar-subscriptions {
+  display: flex;
+  align-items: center;
+}
+
 .sidebar .sidebar-content .sidebar-subscriptions .subscriptions-title {
   display: flex;
   align-items: center;
@@ -128,6 +160,11 @@ mat-divider {
   text-transform: uppercase;
   color: var(--bg-red-light-color);
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-content .sidebar-subscriptions .subscriptions-title {
+  font-size: 12px;
 }
 
 .sidebar .sidebar-content .sidebar-subscriptions .subscriptions-content {
@@ -143,6 +180,12 @@ mat-divider {
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-content .sidebar-subscriptions .subscriptions-content .subscriptions-img {
+  width: 50px;
+  height: 50px;
 }
 
 ::-webkit-scrollbar {
@@ -166,9 +209,6 @@ mat-divider {
   background: var(--text-black-700);
 }
 
-.sidebar-hidden {
-  display: none;
-}
 
 @media (max-width: 1200px) {
   .sidebar-content {

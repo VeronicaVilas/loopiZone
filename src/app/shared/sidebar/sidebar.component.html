@@ -1,9 +1,9 @@
-<div class="sidebar" [ngClass]="{'sidebar-hidden': visible}">
+<div class="sidebar" [ngClass]="{'collapsed': sidebarCollapsed}">
   <div class="sidebar-content">
     <div class="sidebar-profile">
       <img class="img" src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
-      <p class="name">Samantha Darwin</p>
-      <p class="email">example#exemple.com</p>
+      <p class="name" *ngIf="!sidebarCollapsed">Samantha Darwin</p>
+      <p class="email" *ngIf="!sidebarCollapsed">example#exemple.com</p>
       <button mat-mini-fab>
         <mat-icon class="">logout</mat-icon>
       </button>
@@ -12,11 +12,11 @@
     <div class="sidebar-items">
       <div class="sidebar-item">
         <mat-icon>home</mat-icon>
-        <span>Início</span>
+        <span *ngIf="!sidebarCollapsed">Início</span>
       </div>
       <div class="sidebar-item">
         <mat-icon>favorite</mat-icon>
-        <span>Favoritos</span>
+        <span *ngIf="!sidebarCollapsed">Favoritos</span>
       </div>
     </div>
     <mat-divider></mat-divider>
@@ -24,7 +24,7 @@
       <p class="subscriptions-title">Inscrições</p>
       <div class="subscriptions-content">
         <img class="subscriptions-img" src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
-        <p>Alanzoka</p>
+        <p *ngIf="!sidebarCollapsed">Alanzoka</p>
       </div>
     </div>
   </div>

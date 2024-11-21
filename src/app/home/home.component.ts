@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { BannerComponent } from './banner/banner.component';
+import { VideoComponent } from './video/video.component';
+import { AutoCollapseSidebarDirective } from '../shared/directive/auto-collapse-sidebar.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatDividerModule],
+  imports: [BannerComponent, VideoComponent, CommonModule, AutoCollapseSidebarDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
+  @Input() sidebarCollapsed: boolean = true;
 }

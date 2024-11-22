@@ -6,16 +6,10 @@
   transition: all 0.3s ease;
 }
 
-.container.collapsed  {
-  padding-left: 10%;
-}
-
-@media (max-width:1300px) {
+@media (max-width:800px) {
   .container {
-    padding-left: 18%;
-  }
-
-  .container.collapsed  {
-    padding-left: 11%;
+    padding-left: 2%;
   }
 }
+
+

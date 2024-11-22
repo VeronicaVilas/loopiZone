@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { BannerComponent } from './banner/banner.component';
 import { VideoComponent } from './video/video.component';
-import { AutoCollapseSidebarDirective } from '../shared/directive/auto-collapse-sidebar.directive';
+import { SearchComponent } from './search/search.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [BannerComponent, VideoComponent, CommonModule, AutoCollapseSidebarDirective],
+  imports: [BannerComponent, VideoComponent, SearchComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

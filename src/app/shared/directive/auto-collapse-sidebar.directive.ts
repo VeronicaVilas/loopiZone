@@ -13,13 +13,13 @@ export class AutoCollapseSidebarDirective {
   private checkSidebarCollapse() {
     const width = window.innerWidth;
     if (width <= 800) {
-      this.sidebarHidden = true; // Esconde completamente
-      this.sidebarCollapsed = true;
+      this.sidebarHidden = true;
+      this.sidebarCollapsed = false;
     } else if (width <= 1200) {
-      this.sidebarHidden = false; // Apenas colapsa, mas não esconde
+      this.sidebarHidden = false;
       this.sidebarCollapsed = true;
     } else {
-      this.sidebarHidden = false; // Mostra completamente
+      this.sidebarHidden = false;
       this.sidebarCollapsed = false;
     }
     this.sidebarCollapsedChange.emit(this.sidebarCollapsed);

@@ -18,9 +18,11 @@ export class AppComponent {
   sidebarHidden = false;
 
   toggleSidebar() {
-    // Apenas colapsa se não estiver "hidden"
-    if (!this.sidebarHidden) {
+    if (window.innerWidth <= 800) {
+      this.sidebarHidden = !this.sidebarHidden;
+    } else {
       this.sidebarVisible = !this.sidebarVisible;
     }
   }
+
 }

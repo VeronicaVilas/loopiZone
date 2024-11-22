@@ -142,6 +142,10 @@
     flex-basis: 100%;
   }
 
+  .side-video-list {
+    margin-top: 280px;
+  }
+
   .side-video-list img {
     margin-left: 0;
   }

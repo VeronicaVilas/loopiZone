@@ -1,5 +1,5 @@
 <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
-<app-sidebar [sidebarCollapsed]="sidebarVisible"></app-sidebar>
-<app-home [sidebarCollapsed]="sidebarVisible"></app-home>
+<app-sidebar [sidebarCollapsed]="sidebarVisible" [sidebarHidden]="sidebarHidden"></app-sidebar>
+<app-play-video></app-play-video>
 
 <router-outlet></router-outlet>

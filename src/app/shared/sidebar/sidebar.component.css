@@ -3,14 +3,23 @@
   position: fixed;
   top: 0;
   transition: width 0.3s ease;
+  z-index: 1;
 }
 
 .sidebar.collapsed {
   width: 70px;
 }
 
+.sidebar.hidden {
+  display: none;
+}
+
+.sidebar:not(.collapsed):not(.hidden) {
+  width: 250px;
+}
+
 .sidebar .sidebar-content {
-  background-color: #F2F2F2;
+  background-color: #F4F7FC;
   padding-top: 10px;
   width: 210px;
   height: 100vh;
@@ -209,11 +218,15 @@ mat-divider {
   background: var(--text-black-700);
 }
 
+.sidebar:not(.hidden):not(.collapsed) {
+  width: 250px; /* Tamanho expandido */
+}
 
 @media (max-width: 1200px) {
   .sidebar-content {
     width: 70px;
   }
 }
+
 
 

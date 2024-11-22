@@ -14,4 +14,9 @@ import { AutoCollapseSidebarDirective } from '../directive/auto-collapse-sidebar
 })
 export class SidebarComponent {
   @Input() sidebarCollapsed: boolean = true;
+  @Input() sidebarHidden: boolean = false;
+
+  toggleVisibility() {
+    this.sidebarHidden = !this.sidebarHidden;
+  }
 }

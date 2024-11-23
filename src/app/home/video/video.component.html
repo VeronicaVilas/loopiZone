@@ -1,7 +1,7 @@
-<div class="list-container">
-  <div class="vid-list">
+<div class="list-container" *ngIf="(videos$ | async) as videos">
+  <div class="vid-list" *ngFor="let video of videos">
     <div class="image-container">
-      <img class="thumbnail" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="">
+      <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
       <div class="content-tag content-tag">
         <mat-icon>play_circle_filled</mat-icon>
         Live
@@ -10,18 +10,14 @@
     </div>
     <div class="flex-div">
       <div class="vid-info">
-        <p class="vid-title">Best channel to learn coding that help you to be aweb developer</p>
-        <p class="vid-description">The official video for “Never Gonna Give You Up” by Rick Astley</p>
+        <p class="vid-title">{{ video.title }}</p>
+        <p class="vid-description">{{ video.description }}</p>
         <div class="vid-content">
           <img src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
           <div class="vid-content-info">
             <p>Easy Tutorials</p>
             <div class="info-icon">
-              <mat-icon>visibility</mat-icon>
-              <span>15k</span>
-              <p> |</p>
-              <mat-icon>timelapse</mat-icon>
-              <span>2 days</span>
+              <p>{{ video.views | shortNumber:0 }} visualizações &bull; {{ video.uploadedAt | timeAgo }}</p>
             </div>
           </div>
         </div>

@@ -39,18 +39,26 @@
   display: flex;
   top: 10px;
   left: 0;
-  color: white;
+  color: #FFF;
+  font-weight: 900;
   font-size: 12px;
   padding: 3px 15px;
-  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.35);
   font-weight: 500;
 }
 
 .list-container .vid-list .content-tag mat-icon {
   height: 15px;
   font-size: 15px;
-  color: red;
   margin-left: -10px;
+}
+
+.list-container .vid-list .content-tag .icon-live {
+  color: red;
+}
+
+.list-container .vid-list .content-tag .icon-video {
+  color: #2898B5;
 }
 
 .list-container .vid-list .category-tag {

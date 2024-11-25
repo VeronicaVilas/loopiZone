@@ -1,4 +1,9 @@
-<div class="list-container" *ngIf="(videos$ | async) as videos">
+<div class="list-container" *ngIf="(filteredVideos$ | async) as videos">
+
+  <div *ngIf="noVideosFound" class="no-videos-message">
+    <p>😅 Ops! Nenhum vídeo encontrado com esse título... Que tal tentar outra busca?</p>
+  </div>
+
   <div class="vid-list" *ngFor="let video of videos">
     <div class="image-container">
       <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
@@ -31,3 +36,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #noVideos>
+  <div class="no-videos-message">
+    <p>Nenhum vídeo encontrado com esse título. Tente novamente!</p>
+  </div>
+</ng-template>

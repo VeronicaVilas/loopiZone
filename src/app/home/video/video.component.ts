@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { catchError, combineLatest, empty, Observable, of } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { map, startWith } from 'rxjs/operators';
 
 import { VideoService } from '../../shared/services/video/video.service';
 import { Video } from '../../shared/interfaces/video';
-import { CommonModule } from '@angular/common';
-import { catchError, empty, Observable, of } from 'rxjs';
-
 import { ShortNumberPipe } from '../../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
+import { SearchService } from '../../shared/services/search/search.service';
 
 @Component({
   selector: 'app-video',
@@ -19,17 +21,39 @@ import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
 })
 export class VideoComponent implements OnInit {
 
+  matSnackBar = inject(MatSnackBar)
   videos$: Observable<Video[]> = of([]);
+  filteredVideos$: Observable<Video[]> = of([]); // Lista de vídeos filtrados
+  noVideosFound: boolean = false;
 
-  constructor(private videoService: VideoService) {
-  }
+  constructor(
+    private videoService: VideoService,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit() {
-    this.videos$ = this.videoService.get()
-    .pipe(
+    this.videos$ = this.videoService.get().pipe(
       catchError(error => {
-        console.log(error);
+        this.matSnackBar.open('Opa! Algo deu errado... Nossos vídeos fugiram por um momento! 😅 Tente recarregar a página ou tente novamente mais tarde.', '', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
         return empty();
+      })
+    );
+
+    this.filteredVideos$ = combineLatest([
+      this.videos$,
+      this.searchService.searchTerm$.pipe(startWith(''))
+    ]).pipe(
+      map(([videos, searchTerm]) => {
+        const filtered = videos.filter(video =>
+          video.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        this.noVideosFound = filtered.length === 0;  // Define se não há vídeos encontrados
+        return filtered;
       })
     );
   }

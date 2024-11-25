@@ -22,6 +22,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  transition: width 0.3s ease;
 }
 
 h1, p, button {
@@ -44,4 +45,11 @@ h1, p, button {
   background: var(--bg-red-light-color);
   color: #FFF;
   transition: 0.3s;
+}
+
+@media (max-width: 990px) {
+  .banner-text {
+    width: 80%;
+    left: 50%;
+  }
 }

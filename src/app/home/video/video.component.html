@@ -22,7 +22,7 @@
         <p class="vid-title">{{ video.title }}</p>
         <p class="vid-description">{{ video.description }}</p>
         <div class="vid-content">
-          <img src="{{ video.channelIcon }}" alt="">
+          <img src="{{ video.channelIcon }}" alt="Foto de perfil do canal do youtube.">
           <div class="vid-content-info">
             <p>{{ video.channelName }}</p>
             <div class="info-icon">
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="vid-button">
-          <button mat-fab extended class="button-view">Assistir</button>
+          <button mat-fab extended class="button-view" [routerLink]="['/watch', video.id]">Assistir</button>
           <button mat-mini-fab class="button-icon">
             <mat-icon>favorite_border</mat-icon>
           </button>

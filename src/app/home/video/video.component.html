@@ -7,20 +7,24 @@
   <div class="vid-list" *ngFor="let video of videos">
     <div class="image-container">
       <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
-      <div class="content-tag content-tag">
-        <mat-icon>play_circle_filled</mat-icon>
-        Live
+      <div class="content-tag">
+        <mat-icon
+          [ngClass]="{'icon-live': video.type === 'Live', 'icon-video': video.type === 'Video'}"
+        >
+        play_circle_filled
+      </mat-icon>
+        {{ video.type }}
       </div>
-      <div class="category-tag">Fashion</div>
+      <div class="category-tag"> {{ video.category }} </div>
     </div>
     <div class="flex-div">
       <div class="vid-info">
         <p class="vid-title">{{ video.title }}</p>
         <p class="vid-description">{{ video.description }}</p>
         <div class="vid-content">
-          <img src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
+          <img src="{{ video.channelIcon }}" alt="">
           <div class="vid-content-info">
-            <p>Easy Tutorials</p>
+            <p>{{ video.channelName }}</p>
             <div class="info-icon">
               <p>{{ video.views | shortNumber:0 }} visualizações &bull; {{ video.uploadedAt | timeAgo }}</p>
             </div>
@@ -37,8 +41,3 @@
   </div>
 </div>
 
-<ng-template #noVideos>
-  <div class="no-videos-message">
-    <p>Nenhum vídeo encontrado com esse título. Tente novamente!</p>
-  </div>
-</ng-template>

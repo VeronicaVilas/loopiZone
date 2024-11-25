@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -45,34 +45,34 @@ export class VideoComponent implements OnInit {
         return empty();
       })
     );
-
-    this.filteredVideos$ = combineLatest([
-      this.videos$,
-      this.searchService.searchTerm$.pipe(startWith(''))
-    ]).pipe(
-      map(([videos, searchTerm]) => {
-        const filtered = videos.filter(video =>
-          video.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        this.noVideosFound = filtered.length === 0;
-        return filtered;
-      })
-    );
+    this.applyFilters();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['filter'] || changes['category']) {
+      this.applyFilters();
+    }
+  }
+
+  private applyFilters() {
     this.filteredVideos$ = combineLatest([
       this.videos$,
+      this.searchService.searchTerm$.pipe(startWith('')),
       of(this.filter),
       of(this.category)
     ]).pipe(
-      map(([videos, filter, category]) => {
+      map(([videos, searchTerm, filter, category]) => {
         let filtered = videos;
         if (filter !== 'Todos') {
           filtered = filtered.filter(video => video.type === filter);
         }
         if (category !== 'todos') {
           filtered = filtered.filter(video => video.category.toLowerCase() === category.toLowerCase());
+        }
+        if (searchTerm) {
+          filtered = filtered.filter(video =>
+            video.title.toLowerCase().includes(searchTerm.toLowerCase())
+          );
         }
         this.noVideosFound = filtered.length === 0;
         return filtered;

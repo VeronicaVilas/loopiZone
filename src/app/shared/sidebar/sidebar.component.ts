@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { AutoCollapseSidebarDirective } from '../directive/auto-collapse-sidebar.directive';
+import { AuthenticationService } from '../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,24 @@ export class SidebarComponent {
   @Input() sidebarCollapsed: boolean = true;
   @Input() sidebarHidden: boolean = false;
 
+  user$;
+  isAuthenticated$;
+
+  constructor(private authService: AuthenticationService) {
+    this.user$ = this.authService.getUser$();
+    this.isAuthenticated$ = this.authService.isAuthenticated$();
+  }
+
   toggleVisibility() {
     this.sidebarHidden = !this.sidebarHidden;
   }
+
+  login() {
+    this.authService.login();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
 }

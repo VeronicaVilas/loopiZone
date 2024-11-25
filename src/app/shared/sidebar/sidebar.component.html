@@ -7,11 +7,16 @@
   >
   <div class="sidebar-content">
     <div class="sidebar-profile">
-      <img class="img" src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
-      <p class="name" *ngIf="!sidebarCollapsed">Samantha Darwin</p>
-      <p class="email" *ngIf="!sidebarCollapsed">example#exemple.com</p>
-      <button mat-mini-fab>
-        <mat-icon class="">logout</mat-icon>
+      <img *ngIf="isAuthenticated$ | async" class="img" [src]="(user$ | async)?.picture" alt="Foto de perfil do usuário.">
+      <p class="name" *ngIf="!sidebarCollapsed"> {{ (user$ | async)?.name }} </p>
+      <p class="email" *ngIf="!sidebarCollapsed"> {{ (user$ | async)?.email }} </p>
+      <button mat-fab extended (click)="login()" *ngIf="!(isAuthenticated$ | async)">
+        <mat-icon>login</mat-icon>
+        <span class="button-text">Entrar</span>
+      </button>
+      <button mat-fab extended (click)="logout()" *ngIf="isAuthenticated$ | async">
+        <mat-icon>logout</mat-icon>
+        <span class="button-text">Sair</span>
       </button>
     </div>
     <mat-divider></mat-divider>

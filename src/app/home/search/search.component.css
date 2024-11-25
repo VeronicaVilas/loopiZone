@@ -15,6 +15,7 @@
   color: var(--text-black-900);
   font-weight: bold;
   font-size: 14px;
+  outline: none;
 }
 
 .search-container .search-content {
@@ -28,6 +29,7 @@
   color: var(--text-black-700);
 }
 
+.search-content a.active-filter,
 .search-container .search-content a:hover {
   color: var(--text-black-900);
   font-weight: bold;

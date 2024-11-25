@@ -1,8 +1,8 @@
 <div class="container" [ngClass]="{'collapsed': sidebarCollapsed}">
   <app-banner></app-banner>
   <app-search
-    (filterChange)="onFilterChange($event)" (
-    categoryChange)="onCategoryChange($event)"
+    (filterChange)="onFilterChange($event)"
+    (categoryChange)="onCategoryChange($event)"
   ></app-search>
   <app-video
     [filter]="currentFilter"

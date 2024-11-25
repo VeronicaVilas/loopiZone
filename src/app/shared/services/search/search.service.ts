@@ -6,10 +6,11 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SearchService {
 
-  private searchTermSubject = new BehaviorSubject<string>(''); // Inicializa com valor vazio
-  searchTerm$ = this.searchTermSubject.asObservable(); // Torna o observable acessível
+  private searchTermSubject = new BehaviorSubject<string>('');
+  searchTerm$ = this.searchTermSubject.asObservable();
 
   setSearchTerm(term: string) {
-    this.searchTermSubject.next(term); // Atualiza o termo de pesquisa
+    this.searchTermSubject.next(term);
   }
+
 }

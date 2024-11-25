@@ -5,5 +5,9 @@ export interface Video {
   url: string;
   thumbnail: string;
   views: number;
+  type: string;
+  category: string;
+  channelIcon: string;
+  channelName: string;
   uploadedAt: Date;
 }

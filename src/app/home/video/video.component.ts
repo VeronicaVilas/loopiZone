@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -21,9 +21,12 @@ import { SearchService } from '../../shared/services/search/search.service';
 })
 export class VideoComponent implements OnInit {
 
+  @Input() filter: string = 'Todos';
+  @Input() category: string = 'todos';
+
   matSnackBar = inject(MatSnackBar)
   videos$: Observable<Video[]> = of([]);
-  filteredVideos$: Observable<Video[]> = of([]); // Lista de vídeos filtrados
+  filteredVideos$: Observable<Video[]> = of([]);
   noVideosFound: boolean = false;
 
   constructor(
@@ -51,8 +54,27 @@ export class VideoComponent implements OnInit {
         const filtered = videos.filter(video =>
           video.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        this.noVideosFound = filtered.length === 0;
+        return filtered;
+      })
+    );
+  }
 
-        this.noVideosFound = filtered.length === 0;  // Define se não há vídeos encontrados
+  ngOnChanges() {
+    this.filteredVideos$ = combineLatest([
+      this.videos$,
+      of(this.filter),
+      of(this.category)
+    ]).pipe(
+      map(([videos, filter, category]) => {
+        let filtered = videos;
+        if (filter !== 'Todos') {
+          filtered = filtered.filter(video => video.type === filter);
+        }
+        if (category !== 'todos') {
+          filtered = filtered.filter(video => video.category.toLowerCase() === category.toLowerCase());
+        }
+        this.noVideosFound = filtered.length === 0;
         return filtered;
       })
     );

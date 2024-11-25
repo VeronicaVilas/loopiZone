@@ -1,5 +1,11 @@
 <div class="container" [ngClass]="{'collapsed': sidebarCollapsed}">
   <app-banner></app-banner>
-  <app-search></app-search>
-  <app-video></app-video>
+  <app-search
+    (filterChange)="onFilterChange($event)" (
+    categoryChange)="onCategoryChange($event)"
+  ></app-search>
+  <app-video
+    [filter]="currentFilter"
+    [category]="currentCategory"
+  ></app-video>
 </div>

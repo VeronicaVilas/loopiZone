@@ -14,4 +14,15 @@ import { SearchComponent } from './search/search.component';
 })
 export class HomeComponent {
   @Input() sidebarCollapsed: boolean = true;
+
+  currentFilter: string = 'Todos';
+  currentCategory: string = 'todos';
+
+  onFilterChange(newFilter: string) {
+    this.currentFilter = newFilter;
+  }
+
+  onCategoryChange(newCategory: string) {
+    this.currentCategory = newCategory;
+  }
 }

@@ -1,42 +1,43 @@
 <div class="container play-container">
   <div class="row">
-    <div class="play-video">
+    <div class="play-video" *ngIf="video$ | async as video">
       <iframe
-        src="https://www.youtube.com/embed/FTFaQWZBqQ8"
+        *ngIf="safeUrl"
+        [src]="safeUrl"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       >
       </iframe>
       <div class="tags">
-        <a href="">#Live</a>
-        <a href="">#Fashion</a>
-        <h3>Best channel to learn coding that help you to be aweb developer</h3>
+        <a href="">#{{ video.type }}</a>
+        <a href="">#{{ video.category }}</a>
+        <h3>{{ video.title }}</h3>
         <div class="play-video-info">
-          <p>1225 views &bull; 2 days ago</p>
+          <p>{{ video.views | customNumber }} visualizações &bull; {{ video.uploadedAt | customDate }}</p>
         </div>
         <mat-divider></mat-divider>
         <div class="plublisher">
-          <img src="https://cdn.leonardo.ai/users/e8eff8bb-3849-4d38-830d-dafa87ae0552/generations/d03e8d19-39e0-4f13-8793-a5ef74b3e365/Leonardo_Phoenix_Create_a_soft_whimsical_watercolor_drawing_in_3.jpg?w=512" alt="">
+          <img src="{{ video.channelIcon }}" alt="Foto de perfil do canal do youtube.">
           <div>
-            <p>Easy Tutorials</p>
+            <p>{{ video.channelName }}</p>
           </div>
           <button mat-fab extended>Inscreve-se</button>
         </div>
         <div class="vid-description">
-          <p>The official video for “Never Gonna Give You Up” by Rick Astley</p>
+          <p>{{ video.description }}</p>
         </div>
       </div>
     </div>
     <div class="right-sidebar">
-      <div class="side-video-list">
+      <div class="side-video-list" *ngFor="let video of (videos$ | async)">
         <div>
-          <img class="small-thumbnail" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="">
+          <img class="small-thumbnail" src="{{ video.thumbnail }}" alt="">
         </div>
         <div class="vid-info">
-          <p class="vid-title">Best channel to learn coding that help you to be aweb developer</p>
-          <p>Easy Tutorials</p>
-          <p>1225 views &bull; 2 days ago</p>
+          <p class="vid-title">{{ video.title }}</p>
+          <p>{{ video.channelName }}</p>
+          <p>{{ video.views | shortNumber:0 }} visualizações &bull; {{ video.uploadedAt | timeAgo }}</p>
           <button mat-fab extended class="button-view">Assistir</button>
         </div>
       </div>

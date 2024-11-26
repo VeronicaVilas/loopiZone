@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Video } from '../shared/interfaces/video';
 import { ActivatedRoute } from '@angular/router';
 import { VideoService } from '../shared/services/video/video.service';
-import { map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -14,6 +14,7 @@ import { CustomNumberPipe } from '../shared/pipes/customNumber/custom-number.pip
 import { CustomDatePipe } from '../shared/pipes/customDate/custom-date.pipe';
 import { ShortNumberPipe } from '../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../shared/pipes/timeAgo/time-ago.pipe';
+import { SearchService } from '../shared/services/search/search.service';
 
 @Component({
   selector: 'app-play-video',
@@ -26,12 +27,14 @@ export class PlayVideoComponent {
   video$!: Observable<Video | undefined>;
   videos$!: Observable<Video[]>;
   safeUrl: SafeResourceUrl | null = null;
+  filteredVideos$: Observable<Video[]> = of([]);
 
   constructor(
     private route: ActivatedRoute,
     private videoService: VideoService,
     private videoHelper: VideoHelperService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -46,5 +49,19 @@ export class PlayVideoComponent {
         this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
       }
     });
+
+    this.filteredVideos$ = combineLatest([
+      this.videos$,
+      this.searchService.searchTerm$.pipe(startWith(''))
+    ]).pipe(
+      map(([videos, searchTerm]) => {
+        if (searchTerm) {
+          return videos.filter(video =>
+            video.title.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+        return videos;
+      })
+    );
   }
 }

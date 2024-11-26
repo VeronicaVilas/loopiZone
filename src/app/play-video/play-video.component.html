@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="right-sidebar">
-      <div class="side-video-list" *ngFor="let video of (videos$ | async)">
+      <div class="side-video-list" *ngFor="let video of filteredVideos$ | async">
         <div>
           <img class="small-thumbnail" src="{{ video.thumbnail }}" alt="">
         </div>

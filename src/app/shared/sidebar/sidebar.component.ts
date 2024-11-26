@@ -27,6 +27,19 @@ export class SidebarComponent {
     this.isAuthenticated$ = this.authService.isAuthenticated$();
   }
 
+  ngOnInit() {
+    this.user$.subscribe(user => {
+      if (user) {
+        const userData = {
+          name: user.name || '',
+          email: user.email || '',
+          socialLoginProvider: user.sub?.split('|')[0] || 'Unknown',
+        };
+        this.authService.registerUserIfNeeded(userData);
+      }
+    });
+  }
+
   toggleVisibility() {
     this.sidebarHidden = !this.sidebarHidden;
   }

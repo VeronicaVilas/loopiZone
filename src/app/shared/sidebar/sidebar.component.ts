@@ -7,7 +7,9 @@ import { RouterModule } from '@angular/router';
 
 import { AutoCollapseSidebarDirective } from '../directive/auto-collapse-sidebar.directive';
 import { AuthenticationService } from '../services/authentication/authentication.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { SubscriptionService } from '../services/subscription/subscription.service';
+import { Subscription } from '../interfaces/subscription';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,8 +25,9 @@ export class SidebarComponent {
   user$;
   isAuthenticated$;
   userId$: Observable<string | null>;
+  subscriptions$: Observable<Subscription[]> = of([]);
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private subscriptionService: SubscriptionService) {
     this.user$ = this.authService.getUser$();
     this.isAuthenticated$ = this.authService.isAuthenticated$();
     this.userId$ = this.authService.userId$;
@@ -41,6 +44,12 @@ export class SidebarComponent {
         this.authService.registerUserIfNeeded(userData);
       }
     });
+
+    this.loadSubscriptions();
+  }
+
+  loadSubscriptions(): void {
+    this.subscriptions$ = this.subscriptionService.get();
   }
 
   toggleVisibility() {

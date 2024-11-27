@@ -11,12 +11,11 @@ import { VideoService } from '../shared/services/video/video.service';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Favorite } from '../shared/interfaces/favorite';
 import { Video } from '../shared/interfaces/video';
-import { SearchComponent } from '../home/search/search.component';
 
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [SearchComponent, MatButtonModule, MatIconModule, CommonModule, RouterModule, ShortNumberPipe, TimeAgoPipe],
+  imports: [MatButtonModule, MatIconModule, CommonModule, RouterModule, ShortNumberPipe, TimeAgoPipe],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.css'
 })
@@ -41,11 +40,11 @@ export class FavoriteComponent implements OnInit {
         catchError((error) => {
           console.error('Erro ao carregar favoritos:', error);
           this.loading = false;
-          return of([]); // Retorna uma lista vazia em caso de erro
+          return of([]);
         }),
         map((favorites: Favorite[]) => {
           this.favorites = favorites;
-          const videoIds = favorites.map((fav) => fav.videoId); // IDs dos vídeos favoritados
+          const videoIds = favorites.map((fav) => fav.videoId);
           return videoIds;
         }),
         map((videoIds) =>
@@ -55,7 +54,7 @@ export class FavoriteComponent implements OnInit {
         )
       )
       .subscribe((favoriteVideos$) => {
-        this.favoriteVideos$ = favoriteVideos$ ?? of([]); // Garante um observable válido
+        this.favoriteVideos$ = favoriteVideos$ ?? of([]);
         this.loading = false;
       });
   }

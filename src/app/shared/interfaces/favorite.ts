@@ -1,5 +1,5 @@
 export interface Favorite {
-  id: number;
+  id: string;
   userId: string;
   videoId: string;
 }

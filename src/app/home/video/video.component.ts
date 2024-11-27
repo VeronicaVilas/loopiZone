@@ -11,11 +11,12 @@ import { Video } from '../../shared/interfaces/video';
 import { ShortNumberPipe } from '../../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
 import { SearchService } from '../../shared/services/search/search.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-video',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, CommonModule, ShortNumberPipe, TimeAgoPipe],
+  imports: [MatButtonModule, MatIconModule, CommonModule, RouterModule, ShortNumberPipe, TimeAgoPipe],
   templateUrl: './video.component.html',
   styleUrl: './video.component.css'
 })

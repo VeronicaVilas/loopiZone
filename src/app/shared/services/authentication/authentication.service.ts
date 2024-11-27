@@ -16,7 +16,9 @@ export class AuthenticationService {
     private auth: AuthService,
     private userService: UserService,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) {
+    this.restoreUserId(); // Restaura o ID do usuário ao iniciar
+  }
 
   login() {
     this.auth.loginWithRedirect();
@@ -38,10 +40,19 @@ export class AuthenticationService {
 
   setUserId(id: string): void {
     this.userID.next(id);
+    localStorage.setItem('userId', id); // Salva no LocalStorage
   }
 
   clearUserId(): void {
     this.userID.next(null);
+    localStorage.removeItem('userId'); // Remove do LocalStorage
+  }
+
+  restoreUserId(): void {
+    const storedId = localStorage.getItem('userId');
+    if (storedId) {
+      this.userID.next(storedId);
+    }
   }
 
   async registerUserIfNeeded(user: { name: string; email: string; socialLoginProvider: string }) {
@@ -52,8 +63,8 @@ export class AuthenticationService {
         console.log('Usuário cadastrado com sucesso:', newUser);
         this.setUserId(newUser.id);
       } else {
-        console.log('Usuário já existe no sistema. ID:', id); // Exibe o ID do usuário existente
-        this.setUserId(id!); // Define o ID do usuário existente
+        console.log('Usuário já existe no sistema. ID:', id);
+        this.setUserId(id!);
       }
     } catch (error) {
       console.error('Erro ao verificar ou cadastrar usuário:', error);

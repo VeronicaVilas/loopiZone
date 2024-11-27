@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { AutoCollapseSidebarDirective } from '../directive/auto-collapse-sidebar.directive';
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,10 +22,12 @@ export class SidebarComponent {
 
   user$;
   isAuthenticated$;
+  userId$: Observable<string | null>;
 
   constructor(private authService: AuthenticationService) {
     this.user$ = this.authService.getUser$();
     this.isAuthenticated$ = this.authService.isAuthenticated$();
+    this.userId$ = this.authService.userId$;
   }
 
   ngOnInit() {
@@ -50,6 +53,7 @@ export class SidebarComponent {
 
   logout() {
     this.authService.logout();
+    this.authService.clearUserId();
   }
 
 }

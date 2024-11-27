@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { catchError, combineLatest, empty, Observable, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,9 +11,10 @@ import { Video } from '../../shared/interfaces/video';
 import { ShortNumberPipe } from '../../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
 import { SearchService } from '../../shared/services/search/search.service';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FavoriteService } from '../../shared/services/favorite/favorite.service';
 import { Favorite } from '../../shared/interfaces/favorite';
+import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-video',
@@ -34,12 +35,16 @@ export class VideoComponent implements OnInit {
   noVideosFound: boolean = false;
   favorites: Favorite[] = [];
 
+  isAuthenticated$;
+
   constructor(
     private videoService: VideoService,
     private searchService: SearchService,
     private favoriteService: FavoriteService,
-    private router: Router
-  ) {}
+    private authService: AuthenticationService
+  ) {
+    this.isAuthenticated$ = this.authService.isAuthenticated$();
+  }
 
   ngOnInit() {
     this.videos$ = this.videoService.get().pipe(

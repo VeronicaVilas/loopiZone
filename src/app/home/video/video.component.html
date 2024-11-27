@@ -32,7 +32,7 @@
         </div>
         <div class="vid-button">
           <button mat-fab extended class="button-view" [routerLink]="['/watch', video.id]" (click)="incrementViews(video)">Assistir</button>
-          <button mat-mini-fab class="button-icon" (click)="toggleFavorite(video.id)">
+          <button mat-mini-fab class="button-icon" (click)="toggleFavorite(video.id)" *ngIf="(isAuthenticated$ | async)">
             <mat-icon>
               {{ isFavorite(video.id) ? 'favorite' : 'favorite_border' }}
             </mat-icon>

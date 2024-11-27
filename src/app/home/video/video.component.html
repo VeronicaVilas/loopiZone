@@ -32,8 +32,10 @@
         </div>
         <div class="vid-button">
           <button mat-fab extended class="button-view" [routerLink]="['/watch', video.id]">Assistir</button>
-          <button mat-mini-fab class="button-icon">
-            <mat-icon>favorite_border</mat-icon>
+          <button mat-mini-fab class="button-icon" (click)="toggleFavorite(video.id)">
+            <mat-icon>
+              {{ isFavorite(video.id) ? 'favorite' : 'favorite_border' }}
+            </mat-icon>
           </button>
         </div>
       </div>

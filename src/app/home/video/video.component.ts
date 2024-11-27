@@ -12,6 +12,8 @@ import { ShortNumberPipe } from '../../shared/pipes/shortNumber/short-number.pip
 import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
 import { SearchService } from '../../shared/services/search/search.service';
 import { RouterModule } from '@angular/router';
+import { FavoriteService } from '../../shared/services/favorite/favorite.service';
+import { Favorite } from '../../shared/interfaces/favorite';
 
 @Component({
   selector: 'app-video',
@@ -24,15 +26,18 @@ export class VideoComponent implements OnInit {
 
   @Input() filter: string = 'Todos';
   @Input() category: string = 'todos';
+  @Input() userId: string = '';
 
   matSnackBar = inject(MatSnackBar)
   videos$: Observable<Video[]> = of([]);
   filteredVideos$: Observable<Video[]> = of([]);
   noVideosFound: boolean = false;
+  favorites: Favorite[] = [];
 
   constructor(
     private videoService: VideoService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit() {
@@ -47,6 +52,7 @@ export class VideoComponent implements OnInit {
       })
     );
     this.applyFilters();
+    this.loadFavorites();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -79,5 +85,36 @@ export class VideoComponent implements OnInit {
         return filtered;
       })
     );
+  }
+
+  loadFavorites() {
+    this.favoriteService.getFavorites().subscribe(
+      (favorites) => {
+        this.favorites = favorites;
+      },
+      (error) => {
+        console.error('Erro ao carregar favoritos:', error);
+      }
+    );
+  }
+
+  toggleFavorite(videoId: number) {
+    const favorite = this.favorites.find((fav) => fav.videoId === videoId);
+
+    if (favorite) {
+      // Desfavoritar
+      this.favoriteService.removeFavorite(favorite.id).subscribe(() => {
+        this.favorites = this.favorites.filter((fav) => fav.videoId !== videoId);
+      });
+    } else {
+      // Favoritar
+      this.favoriteService.addFavorite(videoId).subscribe((newFavorite) => {
+        this.favorites.push(newFavorite);
+      });
+    }
+  }
+
+  isFavorite(videoId: number): boolean {
+    return this.favorites.some((fav) => fav.videoId === videoId);
   }
 }

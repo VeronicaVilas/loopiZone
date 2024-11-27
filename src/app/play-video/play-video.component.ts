@@ -38,11 +38,13 @@ export class PlayVideoComponent {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.video$ = this.videoService.getVideoById(id);
+
     this.videos$ = this.videoService.get().pipe(
       map((videos) => videos.filter((video) => video.id !== id))
     );
+
     this.video$.subscribe((video) => {
       if (video) {
         const embedUrl = this.videoHelper.convertToEmbedUrl(video.url);

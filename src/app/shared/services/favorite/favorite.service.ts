@@ -37,7 +37,7 @@ export class FavoriteService {
     );
   }
 
-  addFavorite(videoId: number): Observable<Favorite> {
+  addFavorite(videoId: string): Observable<Favorite> {
     return this.getUserId().pipe(
       switchMap((userId) => {
         if (!userId) {

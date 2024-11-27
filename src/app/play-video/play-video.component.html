@@ -22,7 +22,7 @@
           <div>
             <p>{{ video.channelName }}</p>
           </div>
-          <button mat-fab extended>Inscreve-se</button>
+          <button mat-fab extended [ngStyle]="{ 'background-color': isSubscribed ? 'gray' : 'red' }"  (click)="toggleSubscription()" *ngIf="isAuthenticated$ | async"> {{ isSubscribed ? 'Inscrito' : 'Inscrever-se' }}</button>
         </div>
         <div class="vid-description">
           <p>{{ video.description }}</p>

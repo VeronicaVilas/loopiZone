@@ -49,7 +49,7 @@ export class FavoriteService {
     );
   }
 
-  removeFavorite(favoriteId: number): Observable<void> {
+  removeFavorite(favoriteId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${favoriteId}`);
   }
 }

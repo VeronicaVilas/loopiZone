@@ -11,7 +11,7 @@ import { Video } from '../../shared/interfaces/video';
 import { ShortNumberPipe } from '../../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../../shared/pipes/timeAgo/time-ago.pipe';
 import { SearchService } from '../../shared/services/search/search.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FavoriteService } from '../../shared/services/favorite/favorite.service';
 import { Favorite } from '../../shared/interfaces/favorite';
 
@@ -37,7 +37,8 @@ export class VideoComponent implements OnInit {
   constructor(
     private videoService: VideoService,
     private searchService: SearchService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -87,6 +88,20 @@ export class VideoComponent implements OnInit {
     );
   }
 
+  incrementViews(video: Video) {
+    console.log('ID do vídeo:', video.id);
+    const newViews = video.views + 1;
+    this.videoService.updateViews(video.id, newViews).subscribe(
+      (updatedVideo) => {
+        console.log('Visualizações atualizadas:', updatedVideo.views);
+        video.views = updatedVideo.views;
+      },
+      (error) => {
+        console.error('Erro ao atualizar visualizações:', error);
+      }
+    );
+  }
+
   loadFavorites() {
     this.favoriteService.getFavorites().subscribe(
       (favorites) => {
@@ -98,23 +113,20 @@ export class VideoComponent implements OnInit {
     );
   }
 
-  toggleFavorite(videoId: number) {
+  toggleFavorite(videoId: string) {
     const favorite = this.favorites.find((fav) => fav.videoId === videoId);
-
     if (favorite) {
-      // Desfavoritar
       this.favoriteService.removeFavorite(favorite.id).subscribe(() => {
         this.favorites = this.favorites.filter((fav) => fav.videoId !== videoId);
       });
     } else {
-      // Favoritar
       this.favoriteService.addFavorite(videoId).subscribe((newFavorite) => {
         this.favorites.push(newFavorite);
       });
     }
   }
 
-  isFavorite(videoId: number): boolean {
+  isFavorite(videoId: string): boolean {
     return this.favorites.some((fav) => fav.videoId === videoId);
   }
 }

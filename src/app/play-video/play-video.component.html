@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class="right-sidebar">
-      <div class="side-video-list" *ngFor="let video of filteredVideos$ | async">
+      <div class="side-video-list" *ngFor="let video of (filteredVideos$ | async)">
         <div>
           <img class="small-thumbnail" src="{{ video.thumbnail }}" alt="">
         </div>
@@ -54,7 +54,7 @@
           <p class="vid-title">{{ video.title }}</p>
           <p>{{ video.channelName }}</p>
           <p>{{ video.views | shortNumber:0 }} visualizações &bull; {{ video.uploadedAt | timeAgo }}</p>
-          <button mat-fab extended class="button-view">Assistir</button>
+          <button mat-fab extended class="button-view" [routerLink]="['/watch', video.id]" (click)="loadVideo(video.id)">Assistir</button>
         </div>
       </div>
     </div>

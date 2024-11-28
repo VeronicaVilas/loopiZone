@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { Video } from '../shared/interfaces/video';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { VideoService } from '../shared/services/video/video.service';
 import { combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,7 @@ import { LikeService } from '../shared/services/like/like.service';
 @Component({
   selector: 'app-play-video',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDividerModule, CommonModule, CustomNumberPipe, CustomDatePipe,  ShortNumberPipe, TimeAgoPipe, MatButtonToggleModule],
+  imports: [MatIconModule, MatButtonModule, MatDividerModule, CommonModule, CustomNumberPipe, CustomDatePipe,  ShortNumberPipe, TimeAgoPipe, MatButtonToggleModule, RouterModule],
   templateUrl: './play-video.component.html',
   styleUrl: './play-video.component.css'
 })
@@ -81,12 +81,10 @@ export class PlayVideoComponent {
       this.searchService.searchTerm$.pipe(startWith(''))
     ]).pipe(
       map(([videos, searchTerm]) => {
-        if (searchTerm) {
-          return videos.filter((video) =>
-            video.title.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-        return videos;
+        return videos.filter(video => {
+          const matchesSearch = searchTerm ? video.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
+          return matchesSearch && video.id !== this.videoId;
+        });
       })
     );
 
@@ -104,6 +102,19 @@ export class PlayVideoComponent {
     }
 
     this.loadLikes();
+  }
+
+  loadVideo(videoId: string): void {
+    this.videoService.getVideoById(videoId).subscribe((video) => {
+      if (video) {
+        const embedUrl = this.videoHelper.convertToEmbedUrl(video.url);
+        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+        this.channelName = video.channelName;
+        this.channelIcon = video.channelIcon;
+        this.videoId = video.id;
+        this.video$ = of(video);
+      }
+    });
   }
 
   checkSubscriptionStatus(): void {

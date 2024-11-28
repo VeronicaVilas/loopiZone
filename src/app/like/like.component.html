@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="list-container" *ngIf="!loading && (favoriteVideos$ | async) as favoriteVideos">
+
+    <div *ngIf="favoriteVideos.length === 0" class="no-favorites-message">
+      <p>Poxa😔! Sua lista de curtido está vazia. Que tal adicionar alguns vídeos para começar?</p>
+    </div>
+
+    <div class="vid-list" *ngFor="let video of favoriteVideos">
+      <div class="image-container">
+        <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
+        <div class="content-tag">
+          <mat-icon
+            [ngClass]="{'icon-live': video.type === 'Live', 'icon-video': video.type === 'Video'}"
+          >
+          play_circle_filled
+        </mat-icon>
+          {{ video.type }}
+        </div>
+        <div class="category-tag"> {{ video.category }} </div>
+      </div>
+      <div class="flex-div">
+        <div class="vid-info">
+          <p class="vid-title">{{ video.title }}</p>
+          <p class="vid-description">{{ video.description }}</p>
+          <div class="vid-content">
+            <img src="{{ video.channelIcon }}" alt="Foto de perfil do canal do youtube.">
+            <div class="vid-content-info">
+              <p>{{ video.channelName }}</p>
+              <div class="info-icon">
+                <p>{{ video.views | shortNumber:0 }} visualizações &bull; {{ video.uploadedAt | timeAgo }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="vid-button">
+            <button mat-fab extended class="button-view" [routerLink]="['/watch', video.id]">Assistir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

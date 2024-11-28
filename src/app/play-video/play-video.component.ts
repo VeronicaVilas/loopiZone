@@ -6,7 +6,7 @@ import { Video } from '../shared/interfaces/video';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { VideoService } from '../shared/services/video/video.service';
 import { combineLatest, map, Observable, of, startWith } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
@@ -54,7 +54,8 @@ export class PlayVideoComponent {
     private searchService: SearchService,
     private subscriptionService: SubscriptionService,
     private authService: AuthenticationService,
-    private likeService: LikeService
+    private likeService: LikeService,
+    private viewportScroller: ViewportScroller
   ) {
     this.isAuthenticated$ = this.authService.isAuthenticated$();
   }
@@ -102,6 +103,7 @@ export class PlayVideoComponent {
     }
 
     this.loadLikes();
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   loadVideo(videoId: string): void {
@@ -113,6 +115,9 @@ export class PlayVideoComponent {
         this.channelIcon = video.channelIcon;
         this.videoId = video.id;
         this.video$ = of(video);
+        this.filteredVideos$ = this.videoService.get().pipe(
+          map(videos => videos.filter(v => v.id !== videoId))
+        );
       }
     });
   }

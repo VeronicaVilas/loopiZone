@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 import { ShortNumberPipe } from '../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../shared/pipes/timeAgo/time-ago.pipe';
 import { Like } from '../shared/interfaces/like';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Video } from '../shared/interfaces/video';
 import { LikeService } from '../shared/services/like/like.service';
 import { VideoService } from '../shared/services/video/video.service';
+import { SearchService } from '../shared/services/search/search.service';
 
 @Component({
   selector: 'app-like',
@@ -19,12 +20,13 @@ import { VideoService } from '../shared/services/video/video.service';
   styleUrl: './like.component.css'
 })
 export class LikeComponent {
-  favoriteVideos$: Observable<Video[]> = of([]);
+  favoriteLikes$: Observable<Video[]> = of([]);
   loading = true;
 
   constructor(
     private likeService: LikeService,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private searchService: SearchService
   ) {}
 
   ngOnInit() {
@@ -32,30 +34,36 @@ export class LikeComponent {
   }
 
   private loadLikedVideos() {
-    this.likeService.getLikes()
-      .pipe(
-        catchError((error) => {
-          console.error('Erro ao carregar likes:', error);
-          this.loading = false;
-          return of([]); // Retorna uma lista vazia em caso de erro
-        }),
-        map((likes: Like[]) => {
-          // Filtra apenas os vídeos com like: true
-          const likedVideoIds = likes
-            .filter((like) => like.like === true)
-            .map((like) => like.videoId);
-          return likedVideoIds;
-        }),
-        switchMap((likedVideoIds) =>
-          this.videoService.get().pipe(
-            // Filtra os vídeos que correspondem aos IDs curtidos
-            map((videos) => videos.filter((video) => likedVideoIds.includes(video.id)))
-          )
+    const likedVideos$ = this.likeService.getLikes().pipe(
+      catchError((error) => {
+        console.error('Erro ao carregar likes:', error);
+        this.loading = false;
+        return of([]);
+      }),
+      map((likes: Like[]) => {
+        const likedVideoIds = likes
+          .filter((like) => like.like === true)
+          .map((like) => like.videoId);
+        return likedVideoIds;
+      }),
+      switchMap((likedVideoIds) =>
+        this.videoService.get().pipe(
+          map((videos) => videos.filter((video) => likedVideoIds.includes(video.id)))
         )
       )
-      .subscribe((likedVideos) => {
-        this.favoriteVideos$ = of(likedVideos); // Atualiza o Observable com os vídeos curtidos
-        this.loading = false; // Marca o carregamento como concluído
-      });
+    );
+
+    this.favoriteLikes$ = combineLatest([
+      likedVideos$,
+      this.searchService.searchTerm$.pipe(startWith(''))
+    ]).pipe(
+      map(([videos, searchTerm]) => {
+        return videos.filter((video) =>
+          searchTerm ? video.title.toLowerCase().includes(searchTerm.toLowerCase()) : true
+        );
+      })
+    );
+
+    likedVideos$.subscribe(() => (this.loading = false));
   }
 }

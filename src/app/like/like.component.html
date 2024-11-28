@@ -1,8 +1,8 @@
 <div class="container">
-  <div class="list-container" *ngIf="!loading && (favoriteVideos$ | async) as favoriteVideos">
+  <div class="list-container" *ngIf="!loading && (favoriteLikes$ | async) as favoriteVideos">
 
     <div *ngIf="favoriteVideos.length === 0" class="no-favorites-message">
-      <p>Poxa😔! Sua lista de curtido está vazia. Que tal adicionar alguns vídeos para começar?</p>
+      <p>Poxa😔! Sua lista de curtidos está vazia. Que tal curtir alguns dos seus vídeos favoritos?</p>
     </div>
 
     <div class="vid-list" *ngFor="let video of favoriteVideos">

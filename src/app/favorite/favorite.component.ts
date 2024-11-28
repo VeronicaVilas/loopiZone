@@ -67,29 +67,4 @@ export class FavoriteComponent implements OnInit {
 
     this.loading = false;
   }
-
-  private loadFavoriteVideos() {
-    this.favoriteService.getFavorites()
-      .pipe(
-        catchError((error) => {
-          console.error('Erro ao carregar favoritos:', error);
-          this.loading = false;
-          return of([]);
-        }),
-        map((favorites: Favorite[]) => {
-          this.favorites = favorites;
-          const videoIds = favorites.map((fav) => fav.videoId);
-          return videoIds;
-        }),
-        map((videoIds) =>
-          this.videoService.get().pipe(
-            map((videos) => videos.filter((video) => videoIds.includes(video.id)))
-          )
-        )
-      )
-      .subscribe((favoriteVideos$) => {
-        this.favoriteVideos$ = favoriteVideos$ ?? of([]);
-        this.loading = false;
-      });
-  }
 }

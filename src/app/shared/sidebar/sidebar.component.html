@@ -25,9 +25,15 @@
         <mat-icon>home</mat-icon>
         <span *ngIf="!sidebarCollapsed">Início</span>
       </div>
+      <mat-divider></mat-divider>
+      <p class="you-title">Você</p>
       <div class="sidebar-item" routerLink="/favorite" routerLinkActive="active">
         <mat-icon>favorite</mat-icon>
         <span *ngIf="!sidebarCollapsed">Favoritos</span>
+      </div>
+      <div class="sidebar-item" routerLink="/like" routerLinkActive="active">
+        <mat-icon>thumb_up</mat-icon>
+        <span *ngIf="!sidebarCollapsed">Curtidos</span>
       </div>
     </div>
     <mat-divider></mat-divider>
@@ -40,3 +46,4 @@
     </div>
   </div>
 </div>
+

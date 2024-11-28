@@ -2,7 +2,6 @@
   display: flex;
   position: fixed;
   top: 0;
-  transition: width 0.3s ease;
   z-index: 1;
 }
 
@@ -36,7 +35,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 70px;
 }
 
 .sidebar .sidebar-content .sidebar-profile .img {
@@ -104,8 +103,8 @@
 mat-divider {
   align-self: stretch;
   width: 100%;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .sidebar .sidebar-content .sidebar-items {
@@ -123,7 +122,6 @@ mat-divider {
   gap: 24px;
   font-weight: bold;
   position: relative;
-  transition: all 0.3s ease;
 }
 
 .sidebar.collapsed .sidebar-content .sidebar-items .sidebar-item {
@@ -133,7 +131,7 @@ mat-divider {
   padding: 0 24px;
 }
 
-.sidebar .sidebar-content .sidebar-items .sidebar-item span{
+.sidebar .sidebar-content .sidebar-items .sidebar-item span {
   font-size: 16px;
   font-weight: bold;
 }
@@ -160,6 +158,21 @@ mat-divider {
   width: 3px;
   height: 100%;
   background-color: var(--bg-red-light-color);
+}
+
+.sidebar .sidebar-content .you-title {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--bg-red-light-color);
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-content .you-title {
+  font-size: 12px;
 }
 
 .sidebar .sidebar-content .sidebar-subscriptions {

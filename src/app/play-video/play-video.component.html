@@ -15,6 +15,22 @@
         <h3>{{ video.title }}</h3>
         <div class="play-video-info">
           <p>{{ video.views | customNumber }} visualizações &bull; {{ video.uploadedAt | customDate }}</p>
+          <mat-button-toggle-group #group="matButtonToggleGroup" class="like-dislike-buttons">
+            <mat-button-toggle
+              (click)="toggleLike(video.id, true)"
+              [checked]="likes[video.id] === true"
+              class="icon-button"
+            >
+            <mat-icon [ngClass]="{'active-icon': likes[video.id] === true}">thumb_up_alt</mat-icon>
+          </mat-button-toggle>
+            <mat-button-toggle
+              (click)="toggleLike(video.id, false)"
+              [checked]="likes[video.id] === false"
+              class="icon-button"
+            >
+              <mat-icon [ngClass]="{'active-icon': likes[video.id] === false}">thumb_down_alt</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
         <mat-divider></mat-divider>
         <div class="plublisher">

@@ -8,6 +8,7 @@ import { VideoService } from '../shared/services/video/video.service';
 import { combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { VideoHelperService } from '../shared/services/video/video-helper.service';
 import { CustomNumberPipe } from '../shared/pipes/customNumber/custom-number.pipe';
@@ -17,17 +18,19 @@ import { TimeAgoPipe } from '../shared/pipes/timeAgo/time-ago.pipe';
 import { SearchService } from '../shared/services/search/search.service';
 import { SubscriptionService } from '../shared/services/subscription/subscription.service';
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
+import { LikeService } from '../shared/services/like/like.service';
 
 @Component({
   selector: 'app-play-video',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDividerModule, CommonModule, CustomNumberPipe, CustomDatePipe,  ShortNumberPipe, TimeAgoPipe],
+  imports: [MatIconModule, MatButtonModule, MatDividerModule, CommonModule, CustomNumberPipe, CustomDatePipe,  ShortNumberPipe, TimeAgoPipe, MatButtonToggleModule],
   templateUrl: './play-video.component.html',
   styleUrl: './play-video.component.css'
 })
 export class PlayVideoComponent {
   @Input() channelName!: string;
   @Input() channelIcon!: string;
+  @Input() videoId!: string;
 
   video$!: Observable<Video | undefined>;
   videos$!: Observable<Video[]>;
@@ -37,6 +40,9 @@ export class PlayVideoComponent {
   isSubscribed: boolean = false;
   subscriptionId: string | null = null;
   userId: string | null = null;
+  currentLike: boolean | null = null;
+
+  likes: { [videoId: string]: boolean | null } = {};
 
   isAuthenticated$;
 
@@ -47,7 +53,8 @@ export class PlayVideoComponent {
     private sanitizer: DomSanitizer,
     private searchService: SearchService,
     private subscriptionService: SubscriptionService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private likeService: LikeService
   ) {
     this.isAuthenticated$ = this.authService.isAuthenticated$();
   }
@@ -95,6 +102,8 @@ export class PlayVideoComponent {
     if (this.userId) {
       this.checkSubscriptionStatus();
     }
+
+    this.loadLikes();
   }
 
   checkSubscriptionStatus(): void {
@@ -158,4 +167,27 @@ export class PlayVideoComponent {
     }
   }
 
+  private loadLikes(): void {
+    this.likeService.getLikes().subscribe((likes) => {
+      this.likes = likes.reduce((acc, like) => {
+        acc[like.videoId] = like.like;
+        return acc;
+      }, {} as { [key: string]: boolean | null });
+    });
+  }
+
+  toggleLike(videoId: string, isLike: boolean): void {
+    console.log(`Vídeo: ${videoId}, Like: ${isLike}`);
+    if (this.likes[videoId] === isLike) {
+      this.likeService.removeLike(videoId).subscribe(() => {
+        this.likes[videoId] = null;
+        console.log(`Like/Dislike removido para vídeo ${videoId}`);
+      });
+    } else {
+      this.likeService.saveLike(videoId, isLike).subscribe(() => {
+        this.likes[videoId] = isLike;
+        console.log(`Like/Dislike salvo para vídeo ${videoId}`);
+      });
+    }
+  }
 }

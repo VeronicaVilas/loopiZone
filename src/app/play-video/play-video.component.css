@@ -36,6 +36,15 @@
   color: var(--text-black-900);
 }
 
+.play-video-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-button-toggle-group {
+  border-radius: 25px;
+}
+
 .play-video mat-divider {
   margin: 10px 0;
 }
@@ -117,6 +126,10 @@
   width: 80px;
   height: 30px;
   margin-top: 5px;
+}
+
+.active-icon {
+  color: #b40f18;
 }
 
 @media (max-width:800px) {

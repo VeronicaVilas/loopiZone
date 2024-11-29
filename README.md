@@ -1,27 +1,67 @@
-# LoopiZone
+<div align="center">
+  <h1>- LoopiZone -</h1>
+</div>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.6.
+A LoopiZone é uma plataforma de vídeos interativa e robusta, desenvolvida com o objetivo de simular as funcionalidades principais de serviços de streaming, como o YouTube. Este projeto foi elaborado utilizando o framework Angular para garantir uma aplicação dinâmica, escalável e de alto desempenho, complementada por um design visualmente atrativo, concebido no Figma.
 
-## Development server
+**Destaques Funcionais**:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Login Social: Integração com provedores de autenticação social para acesso rápido e seguro.
+- Interface Intuitiva: Uma experiência de navegação eficiente e amigável, projetada para maximizar o engajamento do usuário.
+- Design Moderno: Interface adaptável a diferentes dispositivos, alinhada com as melhores práticas de UX/UI.
 
-## Code scaffolding
+A LoopiZone é uma aplicação modelo para o desenvolvimento de plataformas interativas que integram design criativo e tecnologias de ponta, promovendo experiências digitais inovadoras.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Que uma palhinha👀? Veja o preview abaixo: 
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+> [!NOTE]   
+> Acesse o Design no [Figma](https://www.figma.com/design/vJt4O1bxrD2i7XE07WXx8H/Untitled?node-id=0-1&node-type=canvas&t=Xr58uz6auwGeaJkS-0)
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<h2> 🧮 Ferramentas e tecnologias </h2>
 
-## Running end-to-end tests
+![GitHub](https://img.shields.io/badge/GitHub-000?style=for-the-badge&logo=github&logoColor=30A3DC)
+![Git](https://img.shields.io/badge/Git-000?style=for-the-badge&logo=git&logoColor=E94D5F)
+![Angular](https://img.shields.io/badge/Angular-000?style=for-the-badge&logo=angular&logoColor=960323)
+![HTML](https://img.shields.io/badge/HTML5-000?style=for-the-badge&logo=html5&logoColor=E34F26>)
+![CSS](https://img.shields.io/badge/CSS3-000?style=for-the-badge&logo=css3&logoColor=1572B6)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+<h2> 🛠️ Criando e executando localmente o projeto </h2>
 
-## Further help
+Criar e executar o TrainSys em seu ambiente de desenvolvimento local é muito fácil. Certifique-se de ter o [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/) (versão 14.x ou superior) e [Angular CLI](https://angular.io/cli) (versão mais recente) instalados e siga as instruções abaixo.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+1. Clone o código fonte:
+
+```bash
+git clone https://github.com/VeronicaVilas/loopiZone.git
+```
+
+2. Acesse o diretório do projeto:
+
+```bash
+cd listify
+```
+
+3. Instale as dependências:
+
+```bash
+npm install
+```
+
+4. Rode o banco de dados localmente:
+
+```bash
+npx json-server db.json 
+```
+
+4. Rode a aplicação localmente:
+
+```bash
+ng serve
+```
+
+
+------------
+Disponibilizado por [Verônica Vilas](https://www.linkedin.com/in/veronica-vilas/ "veronica-vilas").

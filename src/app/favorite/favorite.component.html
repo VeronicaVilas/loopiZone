@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="list-container" *ngIf="!loading && (favoriteVideos$ | async) as favoriteVideos">
+  <div class="list-container" *ngIf="loading$ && (favoriteVideos$ | async) as favoriteVideos">
 
     <div *ngIf="favoriteVideos.length === 0" class="no-favorites-message">
       <p>Poxa😔! Sua lista de favoritos está vazia. Que tal adicionar alguns vídeos para começar?</p>
@@ -7,7 +7,11 @@
 
     <div class="vid-list" *ngFor="let video of favoriteVideos">
       <div class="image-container">
-        <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
+        <img
+          class="thumbnail"
+          src="{{ video.thumbnail }}"
+          alt="Imagem em miniatura representando o vídeo '{{ video.title }}'"
+        >
         <div class="content-tag">
           <mat-icon
             [ngClass]="{'icon-live': video.type === 'Live', 'icon-video': video.type === 'Video'}"

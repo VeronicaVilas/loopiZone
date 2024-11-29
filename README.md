@@ -14,6 +14,11 @@ A LoopiZone é uma aplicação modelo para o desenvolvimento de plataformas inte
 
 Que uma palhinha👀? Veja o preview abaixo: 
 
+<div align="center">
+
+  <img src="/public/preview.gif" alt="preview do projeto mostrando seu funcionamento">
+
+</div>
 
 > [!NOTE]   
 > Acesse o Design no [Figma](https://www.figma.com/design/vJt4O1bxrD2i7XE07WXx8H/Untitled?node-id=0-1&node-type=canvas&t=Xr58uz6auwGeaJkS-0)

@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { catchError, combineLatest, map, Observable, of, startWith, switchMap } from 'rxjs';
+
 import { ShortNumberPipe } from '../shared/pipes/shortNumber/short-number.pipe';
 import { TimeAgoPipe } from '../shared/pipes/timeAgo/time-ago.pipe';
 import { Like } from '../shared/interfaces/like';
-import { catchError, combineLatest, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Video } from '../shared/interfaces/video';
 import { LikeService } from '../shared/services/like/like.service';
 import { VideoService } from '../shared/services/video/video.service';
@@ -36,7 +37,6 @@ export class LikeComponent {
   private loadLikedVideos() {
     const likedVideos$ = this.likeService.getLikes().pipe(
       catchError((error) => {
-        console.error('Erro ao carregar likes:', error);
         this.loading = false;
         return of([]);
       }),

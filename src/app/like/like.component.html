@@ -1,13 +1,17 @@
 <div class="container">
-  <div class="list-container" *ngIf="!loading && (favoriteLikes$ | async) as favoriteVideos">
+  <div class="list-container" *ngIf="!loading && (favoriteLikes$ | async) as likeVideos">
 
-    <div *ngIf="favoriteVideos.length === 0" class="no-favorites-message">
+    <div *ngIf="likeVideos.length === 0" class="no-favorites-message">
       <p>Poxa😔! Sua lista de curtidos está vazia. Que tal curtir alguns dos seus vídeos favoritos?</p>
     </div>
 
-    <div class="vid-list" *ngFor="let video of favoriteVideos">
+    <div class="vid-list" *ngFor="let video of likeVideos">
       <div class="image-container">
-        <img class="thumbnail" src="{{ video.thumbnail }}" alt="">
+        <img
+          class="thumbnail"
+          src="{{ video.thumbnail }}"
+          alt="Imagem em miniatura representando o vídeo '{{ video.title }}'"
+        >
         <div class="content-tag">
           <mat-icon
             [ngClass]="{'icon-live': video.type === 'Live', 'icon-video': video.type === 'Video'}"

@@ -21,5 +21,4 @@ export class TimeAgoPipe implements PipeTransform {
       .replace('quase ', '');
     return formattedTime;
   }
-
 }

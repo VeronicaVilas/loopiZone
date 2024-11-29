@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CustomNumberPipe implements PipeTransform {
 
   transform(value: number): string {
-    return value.toLocaleString('pt-BR'); // Usa o formato com ponto como separador de milhar.
+    return value.toLocaleString('pt-BR');
   }
-
 }

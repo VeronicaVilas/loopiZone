@@ -154,7 +154,7 @@ export class PlayVideoComponent {
   subscribe(): void {
     console.log('Inscrevendo...', { channelIcon: this.channelIcon, channelName: this.channelName });
 
-    this.subscriptionService.post(this.channelIcon, this.channelName).subscribe(
+    this.subscriptionService.addSubscription(this.channelIcon, this.channelName).subscribe(
       (newSubscription) => {
         this.isSubscribed = true;
         this.subscriptionId = newSubscription.id;
@@ -170,7 +170,7 @@ export class PlayVideoComponent {
     if (this.subscriptionId) {
       console.log('Desinscrevendo...', { subscriptionId: this.subscriptionId });
 
-      this.subscriptionService.delete(this.subscriptionId).subscribe(
+      this.subscriptionService.removeSubscription(this.subscriptionId).subscribe(
         () => {
           this.isSubscribed = false;
           this.subscriptionId = null;

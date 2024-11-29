@@ -1,8 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { UserService } from '../user/user.service';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthenticationService {
     private userService: UserService,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.restoreUserId(); // Restaura o ID do usuário ao iniciar
+    this.restoreUserId();
   }
 
   login() {
@@ -40,12 +41,12 @@ export class AuthenticationService {
 
   setUserId(id: string): void {
     this.userID.next(id);
-    localStorage.setItem('userId', id); // Salva no LocalStorage
+    localStorage.setItem('userId', id);
   }
 
   clearUserId(): void {
     this.userID.next(null);
-    localStorage.removeItem('userId'); // Remove do LocalStorage
+    localStorage.removeItem('userId');
   }
 
   restoreUserId(): void {
@@ -60,10 +61,8 @@ export class AuthenticationService {
       const { exists, id } = await firstValueFrom(this.userService.userExists(user.email));
       if (!exists) {
         const newUser = await firstValueFrom(this.userService.post(user));
-        console.log('Usuário cadastrado com sucesso:', newUser);
         this.setUserId(newUser.id);
       } else {
-        console.log('Usuário já existe no sistema. ID:', id);
         this.setUserId(id!);
       }
     } catch (error) {

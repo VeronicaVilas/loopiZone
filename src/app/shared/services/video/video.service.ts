@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { Video } from '../../interfaces/video';
-import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 export class VideoService {
 
   private readonly apiUrl = 'http://localhost:3000/videos';
+
   private videosSubject = new BehaviorSubject<Video[]>([]);
   public videos$ = this.videosSubject.asObservable();
 

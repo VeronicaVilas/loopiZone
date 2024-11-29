@@ -69,7 +69,7 @@ export class SidebarComponent {
   }
 
   loadSubscriptions(): void {
-    this.subscriptions$ = this.subscriptionService.get().pipe(
+    this.subscriptions$ = this.subscriptionService.getSubscription().pipe(
       catchError(error=> {
         this.matSnackBar.open('Opa! Algo deu errado... Não foi possível carregar os canais inscritos! 😅 Tente recarregar a página ou tente novamente mais tarde.', '', {
           duration: 3000,

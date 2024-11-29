@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from '../authentication/authentication.service';
 import { catchError, filter, Observable, of, switchMap, throwError } from 'rxjs';
+
+import { AuthenticationService } from '../authentication/authentication.service';
 import { Subscription } from '../../interfaces/subscription';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Subscription } from '../../interfaces/subscription';
 })
 export class SubscriptionService {
 
-  private readonly baseUrl = 'http://localhost:3000/subscription';
+  private readonly apiUrl = 'http://localhost:3000/subscription';
 
   constructor(
     private http: HttpClient,
@@ -22,33 +23,32 @@ export class SubscriptionService {
     );
   }
 
-  get(): Observable<Subscription[]> {
+  getSubscription(): Observable<Subscription[]> {
     return this.getUserId().pipe(
       switchMap((userId) => {
         if (!userId) {
           return throwError(() => new Error('Usuário não autenticado'));
         }
-        return this.http.get<Subscription[]>(`${this.baseUrl}?userId=${userId}`);
+        return this.http.get<Subscription[]>(`${this.apiUrl}?userId=${userId}`);
       }),
       catchError((error) => {
-        console.error('Erro ao obter favoritos:', error);
         return of([]);
       })
     );
   }
 
   getByChannelName(channelName: string): Observable<Subscription[]> {
-    return this.http.get<Subscription[]>(`${this.baseUrl}?channelName=${channelName}`);
+    return this.http.get<Subscription[]>(`${this.apiUrl}?channelName=${channelName}`);
   }
 
-  post(channelIcon: string, channelName: string): Observable<Subscription> {
+  addSubscription(channelIcon: string, channelName: string): Observable<Subscription> {
     return this.getUserId().pipe(
       switchMap((userId) => {
         if (!userId) {
           return throwError(() => new Error('Usuário não autenticado'));
         }
         const favorite: Partial<Subscription> = { userId, channelIcon, channelName };
-        return this.http.post<Subscription>(this.baseUrl, favorite).pipe(
+        return this.http.post<Subscription>(this.apiUrl, favorite).pipe(
           switchMap((newSubscription) => {
             localStorage.setItem('isSubscribed', 'true');
             localStorage.setItem('subscriptionId', newSubscription.id);
@@ -59,8 +59,8 @@ export class SubscriptionService {
     );
   }
 
-  delete(subscriptionId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${subscriptionId}`).pipe(
+  removeSubscription(subscriptionId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${subscriptionId}`).pipe(
       switchMap(() => {
         localStorage.removeItem('isSubscribed');
         localStorage.removeItem('subscriptionId');

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, filter, Observable, of, switchMap, throwError } from 'rxjs';
+
 import { Favorite } from '../../interfaces/favorite';
 import { AuthenticationService } from '../authentication/authentication.service';
 
@@ -9,7 +10,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class FavoriteService {
 
-  private readonly baseUrl = 'http://localhost:3000/favorites';
+  private readonly apiUrl = 'http://localhost:3000/favorites';
 
   constructor(
     private http: HttpClient,
@@ -28,10 +29,9 @@ export class FavoriteService {
         if (!userId) {
           return throwError(() => new Error('Usuário não autenticado'));
         }
-        return this.http.get<Favorite[]>(`${this.baseUrl}?userId=${userId}`);
+        return this.http.get<Favorite[]>(`${this.apiUrl}?userId=${userId}`);
       }),
       catchError((error) => {
-        console.error('Erro ao obter favoritos:', error);
         return of([]);
       })
     );
@@ -44,12 +44,12 @@ export class FavoriteService {
           return throwError(() => new Error('Usuário não autenticado'));
         }
         const favorite: Partial<Favorite> = { userId, videoId };
-        return this.http.post<Favorite>(this.baseUrl, favorite);
+        return this.http.post<Favorite>(this.apiUrl, favorite);
       })
     );
   }
 
   removeFavorite(favoriteId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${favoriteId}`);
+    return this.http.delete<void>(`${this.apiUrl}/${favoriteId}`);
   }
 }

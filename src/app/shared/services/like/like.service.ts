@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from '../authentication/authentication.service';
 import { catchError, filter, Observable, of, switchMap, throwError } from 'rxjs';
+
+import { AuthenticationService } from '../authentication/authentication.service';
 import { Like } from '../../interfaces/like';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LikeService {
-  private readonly baseUrl = 'http://localhost:3000/likes';
+  private readonly apiUrl = 'http://localhost:3000/likes';
 
   constructor(
     private http: HttpClient,
@@ -24,11 +25,10 @@ export class LikeService {
   getLikes(): Observable<Like[]> {
     return this.getUserId().pipe(
       switchMap((userId) =>
-        this.http.get<Like[]>(`${this.baseUrl}?userId=${userId}`)
+        this.http.get<Like[]>(`${this.apiUrl}?userId=${userId}`)
       ),
       catchError((error) => {
-        console.error('Erro ao obter likes:', error);
-        return of([]); 
+        return of([]);
       })
     );
   }
@@ -37,11 +37,10 @@ export class LikeService {
     return this.getUserId().pipe(
       switchMap((userId) =>
         this.http
-          .get<Like[]>(`${this.baseUrl}?userId=${userId}&videoId=${videoId}`)
+          .get<Like[]>(`${this.apiUrl}?userId=${userId}&videoId=${videoId}`)
           .pipe(
-            switchMap((likes) => of(likes[0] || null)), 
+            switchMap((likes) => of(likes[0] || null)),
             catchError((error) => {
-              console.error('Erro ao buscar like/dislike:', error);
               return of(null);
             })
           )
@@ -53,10 +52,9 @@ export class LikeService {
     return this.getUserId().pipe(
       switchMap((userId) => {
         const newLike = { userId, videoId, like };
-        return this.http.post<Like>(this.baseUrl, newLike);
+        return this.http.post<Like>(this.apiUrl, newLike);
       }),
       catchError((error) => {
-        console.error('Erro ao salvar like/dislike:', error);
         return throwError(() => new Error('Erro ao salvar like/dislike.'));
       })
     );
@@ -66,12 +64,11 @@ export class LikeService {
     return this.getLikeByVideo(videoId).pipe(
       switchMap((existingLike) => {
         if (existingLike) {
-          return this.http.delete<void>(`${this.baseUrl}/${existingLike.id}`);
+          return this.http.delete<void>(`${this.apiUrl}/${existingLike.id}`);
         }
-        return of(); 
+        return of();
       }),
       catchError((error) => {
-        console.error('Erro ao remover like/dislike:', error);
         return throwError(() => new Error('Erro ao remover like/dislike.'));
       })
     );

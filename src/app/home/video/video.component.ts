@@ -1,10 +1,10 @@
-import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { catchError, combineLatest, empty, Observable, of } from 'rxjs';
+import { catchError, combineLatest, empty, Observable, of, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { VideoService } from '../../shared/services/video/video.service';
 import { Video } from '../../shared/interfaces/video';
@@ -23,7 +23,7 @@ import { AuthenticationService } from '../../shared/services/authentication/auth
   templateUrl: './video.component.html',
   styleUrl: './video.component.css'
 })
-export class VideoComponent implements OnInit {
+export class VideoComponent implements OnInit, OnDestroy {
 
   @Input() filter: string = 'Todos';
   @Input() category: string = 'todos';
@@ -34,8 +34,9 @@ export class VideoComponent implements OnInit {
   filteredVideos$: Observable<Video[]> = of([]);
   noVideosFound: boolean = false;
   favorites: Favorite[] = [];
-
   isAuthenticated$;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private videoService: VideoService,
@@ -48,6 +49,7 @@ export class VideoComponent implements OnInit {
 
   ngOnInit() {
     this.videos$ = this.videoService.get().pipe(
+      takeUntil(this.destroy$),
       catchError(error => {
         this.matSnackBar.open('Opa! Algo deu errado... Nossos vídeos fugiram por um momento! 😅 Tente recarregar a página ou tente novamente mais tarde.', '', {
           duration: 5000,
@@ -65,6 +67,11 @@ export class VideoComponent implements OnInit {
     if (changes['filter'] || changes['category']) {
       this.applyFilters();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private applyFilters() {
@@ -94,7 +101,6 @@ export class VideoComponent implements OnInit {
   }
 
   incrementViews(video: Video) {
-    console.log('ID do vídeo:', video.id);
     const newViews = video.views + 1;
     this.videoService.updateViews(video.id, newViews).subscribe(
       (updatedVideo) => {
@@ -102,7 +108,13 @@ export class VideoComponent implements OnInit {
         video.views = updatedVideo.views;
       },
       (error) => {
-        console.error('Erro ao atualizar visualizações:', error);
+        this.matSnackBar.open(
+          'Opa! Algo deu errado ao atualizar as visualizações dos vídeos. Por favor, tente novamente.', '', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     );
   }
@@ -113,7 +125,13 @@ export class VideoComponent implements OnInit {
         this.favorites = favorites;
       },
       (error) => {
-        console.error('Erro ao carregar favoritos:', error);
+        this.matSnackBar.open(
+          'Opa! Algo deu errado ao carregar seus vídeos favoritos. Por favor, tente novamente.', '', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       }
     );
   }

@@ -16,7 +16,14 @@ import { SearchService } from '../shared/services/search/search.service';
 @Component({
   selector: 'app-like',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, CommonModule, RouterModule, ShortNumberPipe, TimeAgoPipe],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    RouterModule,
+    ShortNumberPipe,
+    TimeAgoPipe
+  ],
   templateUrl: './like.component.html',
   styleUrl: './like.component.css'
 })

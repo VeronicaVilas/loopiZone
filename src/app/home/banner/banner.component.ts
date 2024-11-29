@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 import { CommonModule } from '@angular/common';
+
+import { AuthenticationService } from '../../shared/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-banner',

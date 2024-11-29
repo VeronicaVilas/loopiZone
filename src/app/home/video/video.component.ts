@@ -19,7 +19,14 @@ import { AuthenticationService } from '../../shared/services/authentication/auth
 @Component({
   selector: 'app-video',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, CommonModule, RouterModule, ShortNumberPipe, TimeAgoPipe],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    RouterModule,
+    ShortNumberPipe,
+    TimeAgoPipe
+  ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.css'
 })

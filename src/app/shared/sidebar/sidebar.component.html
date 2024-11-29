@@ -1,13 +1,18 @@
 <div
-    class="sidebar"
-    [ngClass]="{'collapsed': sidebarCollapsed, 'hidden': sidebarHidden}"
-    appAutoCollapseSidebar
-    [(sidebarCollapsed)]="sidebarCollapsed"
-    [(sidebarHidden)]="sidebarHidden"
-  >
+  class="sidebar"
+  [ngClass]="{'collapsed': sidebarCollapsed, 'hidden': sidebarHidden}"
+  appAutoCollapseSidebar
+  [(sidebarCollapsed)]="sidebarCollapsed"
+  [(sidebarHidden)]="sidebarHidden"
+>
   <div class="sidebar-content">
     <div class="sidebar-profile">
-      <img *ngIf="isAuthenticated$ | async" class="img" [src]="(user$ | async)?.picture" alt="Foto de perfil do usuário.">
+      <img
+        *ngIf="isAuthenticated$ | async"
+        class="img"
+        [src]="(user$ | async)?.picture"
+        alt="Foto de perfil do usuário autenticado, exibindo a imagem associada à conta do usuário."
+      >
       <p class="name" *ngIf="!sidebarCollapsed"> {{ (user$ | async)?.name }} </p>
       <p class="email" *ngIf="!sidebarCollapsed"> {{ (user$ | async)?.email }} </p>
       <button mat-fab extended (click)="login()" *ngIf="!(isAuthenticated$ | async)">
@@ -40,8 +45,12 @@
     <div class="sidebar-subscriptions" *ngIf="(subscriptions$ | async) as subscriptions">
       <p class="subscriptions-title">Inscrições</p>
       <div class="subscriptions-content" *ngFor="let subscription of subscriptions">
-        <img class="subscriptions-img" src="{{ subscription.channelIcon }}" alt="">
-        <p *ngIf="!sidebarCollapsed">{{ subscription.channelName }}</p>
+        <img
+          class="subscriptions-img"
+          src="{{ subscription.channelIcon }}"
+          alt="Logo do canal associado ao vídeo."
+        >
+        <p *ngIf="!sidebarCollapsed"> {{ subscription.channelName }} </p>
       </div>
     </div>
   </div>

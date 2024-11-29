@@ -1,15 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { Video } from '../shared/interfaces/video';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { VideoService } from '../shared/services/video/video.service';
 import { combineLatest, map, Observable, of, startWith } from 'rxjs';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Video } from '../shared/interfaces/video';
 import { VideoHelperService } from '../shared/services/video/video-helper.service';
 import { CustomNumberPipe } from '../shared/pipes/customNumber/custom-number.pipe';
 import { CustomDatePipe } from '../shared/pipes/customDate/custom-date.pipe';
@@ -23,7 +24,18 @@ import { LikeService } from '../shared/services/like/like.service';
 @Component({
   selector: 'app-play-video',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDividerModule, CommonModule, CustomNumberPipe, CustomDatePipe,  ShortNumberPipe, TimeAgoPipe, MatButtonToggleModule, RouterModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule,
+    CommonModule,
+    CustomNumberPipe,
+    CustomDatePipe,
+    ShortNumberPipe,
+    TimeAgoPipe,
+    MatButtonToggleModule,
+    RouterModule
+  ],
   templateUrl: './play-video.component.html',
   styleUrl: './play-video.component.css'
 })
@@ -32,6 +44,9 @@ export class PlayVideoComponent {
   @Input() channelIcon!: string;
   @Input() videoId!: string;
 
+  matSnackBar = inject(MatSnackBar)
+
+  userId: string | null = null;
   video$!: Observable<Video | undefined>;
   videos$!: Observable<Video[]>;
   safeUrl: SafeResourceUrl | null = null;
@@ -39,9 +54,8 @@ export class PlayVideoComponent {
 
   isSubscribed: boolean = false;
   subscriptionId: string | null = null;
-  userId: string | null = null;
-  currentLike: boolean | null = null;
 
+  currentLike: boolean | null = null;
   likes: { [videoId: string]: boolean | null } = {};
 
   isAuthenticated$;
@@ -90,10 +104,8 @@ export class PlayVideoComponent {
     );
 
     this.userId = localStorage.getItem('userId');
-
     const storedSubscriptionId = localStorage.getItem('subscriptionId');
     const storedIsSubscribed = localStorage.getItem('isSubscribed');
-
     if (storedSubscriptionId && storedIsSubscribed === 'true') {
       this.isSubscribed = true;
       this.subscriptionId = storedSubscriptionId;
@@ -103,6 +115,7 @@ export class PlayVideoComponent {
     }
 
     this.loadLikes();
+
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
@@ -136,14 +149,20 @@ export class PlayVideoComponent {
             this.isSubscribed = false;
           }
         },
-        (error) => console.error('Erro ao verificar status de inscrição:', error)
+        (error) => {
+          this.matSnackBar.open(
+            'Opa! Algo deu errado ao verificar sua inscrição. Por favor, tente novamente.', '', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
+        }
       );
     }
   }
 
   toggleSubscription(): void {
-    console.log('Alternando Inscrição', { isSubscribed: this.isSubscribed });
-
     if (this.isSubscribed) {
       this.unsubscribe();
     } else {
@@ -152,33 +171,43 @@ export class PlayVideoComponent {
   }
 
   subscribe(): void {
-    console.log('Inscrevendo...', { channelIcon: this.channelIcon, channelName: this.channelName });
-
     this.subscriptionService.addSubscription(this.channelIcon, this.channelName).subscribe(
       (newSubscription) => {
         this.isSubscribed = true;
         this.subscriptionId = newSubscription.id;
         localStorage.setItem('isSubscribed', 'true');
         localStorage.setItem('subscriptionId', newSubscription.id);
-        console.log('Inscrição realizada com sucesso!', { newSubscription });
       },
-      (error) => console.error('Erro ao realizar inscrição:', error)
+      (error) => {
+        this.matSnackBar.open(
+          'Opa! Algo deu errado ao realizar sua inscrição no canal. Por favor, tente novamente.', '', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
+      }
     );
   }
 
   unsubscribe(): void {
     if (this.subscriptionId) {
-      console.log('Desinscrevendo...', { subscriptionId: this.subscriptionId });
-
       this.subscriptionService.removeSubscription(this.subscriptionId).subscribe(
         () => {
           this.isSubscribed = false;
           this.subscriptionId = null;
           localStorage.removeItem('isSubscribed');
           localStorage.removeItem('subscriptionId');
-          console.log('Desinscrição realizada com sucesso!');
         },
-        (error) => console.error('Erro ao desinscrever:', error)
+        (error) => {
+          this.matSnackBar.open(
+            'Opa! Algo deu errado ao cancelar sua inscrição no canal. Por favor, tente novamente.', '', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
+        }
       );
     }
   }
@@ -197,12 +226,10 @@ export class PlayVideoComponent {
     if (this.likes[videoId] === isLike) {
       this.likeService.removeLike(videoId).subscribe(() => {
         this.likes[videoId] = null;
-        console.log(`Like/Dislike removido para vídeo ${videoId}`);
       });
     } else {
       this.likeService.saveLike(videoId, isLike).subscribe(() => {
         this.likes[videoId] = isLike;
-        console.log(`Like/Dislike salvo para vídeo ${videoId}`);
       });
     }
   }

@@ -47,7 +47,7 @@ h1, p, button {
   transition: 0.3s;
 }
 
-@media (max-width: 990px) {
+@media (max-width: 1190px) {
   .banner-text {
     width: 80%;
     left: 50%;
